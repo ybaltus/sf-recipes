@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sf6Recettes - Liste des ingrédients{% endblock %}
+
+{% block body %}
+    <h1 class="text-secodnary">Liste des ingrédients</h1>
+    {% for label, messages in app.flashes(['success', 'warning']) %}
+        {% for message in messages %}
+            <div class="alert alert-dismissible alert-{{ label }}">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <p class="mb-0">{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    <div class="d-grid gap-2">
+        <a class="btn btn-lg btn-primary" title="Ajouter un nouvel ingrédient" href="{{ path('ingredient_new') }}">Ajouter un ingrédient</a>
+    </div>
+    {% if ingredients.items is not same as([]) %}
+        {# total items count #}
+        <div class="count">
+            <p>Il y a {{ ingredients.getTotalItemCount }} ingrédients au total.</p>
+        </div>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Numéro</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prix / kg</th>
+                <th scope="col">Date de création</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for ingredient in ingredients%}
+                <tr>
+                    <th scope="row" class="table-primary">{{ ingredient.id }}</th>
+                    <td>{{ ingredient.name }}</td>
+                    <td>{{ ingredient.price }} &euro;</td>
+                    <td>{{ ingredient.createdAt|date('d/m/Y') }}</td>
+                    <td>
+                        <a class="btn btn-secondary" title="Éditer un ingrédient" href="{{ path('ingredient_edit', {'id': ingredient.id}) }}">Éditer</a>
+                        <a class="btn btn-danger" title="Supprimer un ingrédient" href="{{ path('ingredient_delete', {'id': ingredient.id}) }}">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {# display navigation #}
+        <div class="navigation d-flex justify-content-center">
+            {{ knp_pagination_render(ingredients) }}
+        </div>
+    {% else %}
+        <div class="count">
+            <p>Il n'y a pas d'ingrédients.</p>
+        </div>
+    {% endif %}
+
+{% endblock %}
