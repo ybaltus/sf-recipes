@@ -162,7 +162,7 @@ class AppFixtures extends Fixture
             ->setPseudo(mt_rand(0, 1) == 1 ? $this->faker->firstName() : null)
             ->setEmail($this->faker->email())
             ->setRoles(['ROLE_USER'])
-            ->setPlainPassword('12345678')
+            ->setPlainPassword('password')
             ;
     }
 }
