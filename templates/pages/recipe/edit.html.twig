@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1> Éditer une recette</h1>
+    <a class="btn btn-secondary" title="Revenir vers la liste des ingrédients" href="{{ path('recipe_index') }}">Retour</a>
+
+    {#    {{ form(form) }}#}
+    {{ form_start(form) }}
+
+    <div class="form-group">
+        {{ form_label(form.name) }}
+        {{ form_widget(form.name) }}
+        <div class="form-error">
+            {{ form_errors(form.name) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.description) }}
+        {{ form_widget(form.description) }}
+        <div class="form-error">
+            {{ form_errors(form.description) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.time) }}
+        {{ form_widget(form.time) }}
+        <div class="form-error">
+            {{ form_errors(form.time) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.nbPeople) }}
+        {{ form_widget(form.nbPeople) }}
+        <div class="form-error">
+            {{ form_errors(form.nbPeople) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.price) }}
+        {{ form_widget(form.price) }}
+        <div class="form-error">
+            {{ form_errors(form.price) }}
+        </div>
+    </div>
+
+    <div class="form-group mt-4">
+        <div class="form-check form-switch">
+            {{ form_label(form.isFavorite) }}
+            {{ form_widget(form.isFavorite) }}
+        </div>
+        <div class="form-error">
+            {{ form_errors(form.isFavorite) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.difficulty) }}
+        {{ form_widget(form.difficulty) }}
+        <div class="form-error">
+            {{ form_errors(form.difficulty) }}
+        </div>
+    </div>
+
+    <fieldset class="form-group mt-4">
+        <div class="form-check">
+            {{ form_label(form.ingredients) }}
+            {{ form_widget(form.ingredients) }}
+        </div>
+        <div class="form-error">
+            {{ form_errors(form.ingredients) }}
+        </div>
+    </fieldset>
+
+    <div class="form-group">
+        {{ form_row(form.submit) }}
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

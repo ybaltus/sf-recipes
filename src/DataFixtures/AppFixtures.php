@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Ingredient;
+use App\Entity\Recipe;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -65,6 +66,41 @@ class AppFixtures extends Fixture
         'Basilic'
     ];
 
+    private array $recipeNames = [
+        'Salade César',
+        'Oeufs mollets',
+        'Falafel',
+        'Soupe à l\'oignon',
+        'tarte au poireaux',
+        'Tarte au thon',
+        'Artichaud nature',
+        'Cake salé',
+        'Soupe de poids cassés',
+        'Asperges blanches',
+        'Tacos mexicains',
+        'Omelette nature',
+        'Salade pâtes au thon',
+        'Bruchetta',
+        'Samoussa au boeuf',
+        'Samoussa au poulet',
+        'Samoussa végétarien',
+        'Flan de courgette',
+        'Gratin de pomme de terre',
+        'Salade de riz',
+        'Quiche lorraine',
+        'Raviolis japonais',
+        'Taboulé',
+        'Couscous royale',
+        'Salade composée',
+        'Magret de canard',
+        'Bagels',
+        'Sandwich',
+        'hamburger',
+        'Bokit au poulet',
+        'Bokit au jambon',
+        'Pavé de saumon'
+    ];
+
     public function __construct()
     {
         $this->faker = Factory::create('fr_FR');
@@ -72,17 +108,43 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        // Ingredients
+        $ingredients = [];
         for($i=0; $i < 50; $i++){
-            $product = $this->newIngredient($this->ingredientNames[$i]);
-            $manager->persist($product);
+            $ingredient = $this->newIngredient($this->ingredientNames[$i]);
+            $ingredients[] = $ingredient;
+            $manager->persist($ingredient);
         }
+
+        // Recipes
+        for($i=0; $i < 25; $i++){
+            $recipe = $this->newRecipe($this->recipeNames[$i], $ingredients);
+            $manager->persist($recipe);
+        }
+
         $manager->flush();
     }
 
     private function newIngredient(string $name): Ingredient{
         return (new Ingredient())
             ->setName($name)
-            ->setPrice(rand(1, 200))
+            ->setPrice(mt_rand(1, 200))
             ;
+    }
+
+    private function newRecipe(string $name, array $ingredients): Recipe{
+        $recipe =  (new Recipe())
+            ->setName($name)
+            ->setTime(mt_rand(0, 1) == 1 ? mt_rand(1, 1440) : null)
+            ->setNbPeople(mt_rand(0, 1) == 1 ? mt_rand(1, 50) : null)
+            ->setNbPeople(mt_rand(0, 1) == 1 ? mt_rand(1, 5) : null)
+            ->setDescription($this->faker->text(300))
+            ->setPrice(mt_rand(0, 1) == 1 ? mt_rand(1, 1000) : null)
+            ->setIsFavorite(mt_rand(0, 1) == 1)
+            ;
+        for($i = 0; $i < mt_rand(5, 15); $i++) {
+            $recipe->addIngredient($ingredients[mt_rand(0, 49)]);
+        }
+        return $recipe;
     }
 }

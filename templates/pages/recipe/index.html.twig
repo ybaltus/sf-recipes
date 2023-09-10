@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sf6 - Les recettes{% endblock %}
+
+{% block body %}
+    <h1 class="text-secodnary">Liste des recettes</h1>
+    {% for label, messages in app.flashes(['success', 'warning']) %}
+        {% for message in messages %}
+            <div class="alert alert-dismissible alert-{{ label }}">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <p class="mb-0">{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    <div class="d-grid gap-2">
+        <a class="btn btn-lg btn-primary" title="Ajouter une nouvelle recette" href="{{ path('recipe_new') }}">Ajouter une recette </a>
+    </div>
+    {% if recipes.items is not same as([]) %}
+        {# total items count #}
+        <div class="count">
+            <p>Il y a {{ recipes.getTotalItemCount }} recettes au total.</p>
+        </div>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Numéro</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prix / kg</th>
+                <th scope="col">Difficulté</th>
+                <th scope="col">Date de création</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for recipe in recipes %}
+                <tr>
+                    <th scope="row" class="table-primary">{{ recipe.id }}</th>
+                    <td>{{ recipe.name }}</td>
+                    <td>{{ (recipe.price is null) ? '-' : recipe.price }}</td>
+                    <td>{{ (recipe.difficulty is null) ? '-' : recipe.difficulty }} </td>
+                    <td>{{ recipe.createdAt|date('d/m/Y') }}</td>
+                    <td>
+                        <a class="btn btn-secondary" title="Éditer une recette" href="{{ path('recipe_edit', {'id': recipe.id}) }}">Éditer</a>
+                        <a class="btn btn-danger" title="Supprimer une recette" href="{{ path('recipe_delete', {'id': recipe.id}) }}">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {# display navigation #}
+        <div class="navigation d-flex justify-content-center">
+            {{ knp_pagination_render(recipes) }}
+        </div>
+    {% else %}
+        <div class="count">
+            <p>Il n'y a pas de recettes.</p>
+        </div>
+    {% endif %}
+
+{% endblock %}

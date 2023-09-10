@@ -72,8 +72,7 @@ class IngredientController extends AbstractController
             // $form->getData() holds the submitted values
             // but, the original `$task` variable has also been updated
 //            $ingredient = $form->getData();
-            $ingredient->setUpdatedAt(new \DateTimeImmutable());
-            $em->persist($ingredient);
+//            $em->persist($ingredient);
             $em->flush();
 
             $this->addFlash(

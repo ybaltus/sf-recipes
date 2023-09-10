@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
 #[UniqueEntity('name')]
+#[ORM\HasLifecycleCallbacks]
 class Ingredient
 {
     #[ORM\Id]
@@ -110,5 +111,15 @@ class Ingredient
         $this->isLocked = $isLocked;
 
         return $this;
+    }
+
+    public function __toString(){
+        return $this->name;
+    }
+
+    #[ORM\PreUpdate]
+    public function setUpdatedtAtValue(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable();
     }
 }
