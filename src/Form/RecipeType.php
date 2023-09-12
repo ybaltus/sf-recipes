@@ -7,6 +7,7 @@ use App\Entity\Recipe;
 use App\Repository\IngredientRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -20,6 +21,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 class RecipeType extends AbstractType
 {
+    private Security $security;
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -143,8 +150,10 @@ class RecipeType extends AbstractType
                 ],
                 'query_builder' => function(IngredientRepository $er){
                     return $er->createQueryBuilder('i')
-                        ->where('i.isLocked = FALSE')
+                        ->where('i.user = :user')
+                        ->andWhere('i.isLocked = FALSE')
                         ->orderBy('i.name', 'ASC')
+                        ->setParameter('user', $this->security->getUser())
                         ;
                 },
                 'multiple' => true,
