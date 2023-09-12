@@ -24,8 +24,7 @@ class UserListener
     }
     #[PreUpdate]
     public function preUpdateHandler(User $user, PreUpdateEventArgs $event): void{
-        // Do not triggered for edit password
-//        $this->encodePassword($user);
+        $this->encodePassword($user);
     }
 
     private function encodePassword(User $user){

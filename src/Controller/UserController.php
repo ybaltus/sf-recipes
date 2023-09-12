@@ -67,13 +67,8 @@ class UserController extends AbstractController
                     'Votre mot de passe à été édité avec succès !'
                 );
 
-                // UserListener not triggered on PreUpdate event...
-                $hashedPassword = $passwordHasher->hashPassword(
-                    $user,
-                    $data['newPassword']
-                );
-                $user->setPassword($hashedPassword);
-//                $user->setPlainPassword($data['newPassword']);
+                $user->setUpdatedAt(new \DateTimeImmutable());
+                $user->setPlainPassword($data['newPassword']);
 
                 $em->persist($user);
                 $em->flush();
