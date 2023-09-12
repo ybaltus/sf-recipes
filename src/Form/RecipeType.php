@@ -26,8 +26,8 @@ class RecipeType extends AbstractType
             ->add('name', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'minLength' => '2',
-                    'maxLength' => '50'
+                    'minlength' => '2',
+                    'maxlength' => '50'
                 ],
                 'label' =>  'Nom',
                 'label_attr' => [
