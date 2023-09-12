@@ -26,7 +26,7 @@ class IngredientController extends AbstractController
     {
 //        $ingredients = $ingredientRepository->findBy(['isLocked' => false], ['name'=>'ASC']);
         $ingredients = $paginator->paginate(
-            $ingredientRepository->findBy(['isLocked' => false], ['name'=>'ASC']), /* query NOT result */
+            $ingredientRepository->findBy(['user' => $this->getUser(),'isLocked' => false], ['name'=>'ASC']), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             10 /*limit per page*/
         );
@@ -46,6 +46,7 @@ class IngredientController extends AbstractController
             // $form->getData() holds the submitted values
             // but, the original `$task` variable has also been updated
             $ingredient = $form->getData();
+            $ingredient->setUser($this->getUser());
 
             $em->persist($ingredient);
             $em->flush();

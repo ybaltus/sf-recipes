@@ -44,6 +44,10 @@ class Ingredient
     #[Assert\NotNull]
     private bool $isLocked = false;
 
+    #[ORM\ManyToOne(inversedBy: 'ingredients')]
+    #[ORM\JoinColumn(nullable: false)]
+    private User $user;
+
     public function __construct(){
         $this->createdAt = new \DateTimeImmutable();
     }
@@ -121,5 +125,17 @@ class Ingredient
     public function setUpdatedtAtValue(): void
     {
         $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }

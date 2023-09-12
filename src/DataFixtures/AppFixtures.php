@@ -109,10 +109,18 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        // Users
+        $users = [];
+        for($i=0; $i < 10; $i++){
+            $user = $this->newUser();
+            $users[] = $user;
+            $manager->persist($user);
+        }
+
         // Ingredients
         $ingredients = [];
         for($i=0; $i < 50; $i++){
-            $ingredient = $this->newIngredient($this->ingredientNames[$i]);
+            $ingredient = $this->newIngredient($this->ingredientNames[$i], $users);
             $ingredients[] = $ingredient;
             $manager->persist($ingredient);
         }
@@ -123,20 +131,17 @@ class AppFixtures extends Fixture
             $manager->persist($recipe);
         }
 
-        // Users
-        for($i=0; $i < 10; $i++){
-            $user = $this->newUser();
-            $manager->persist($user);
-        }
+
 
 
         $manager->flush();
     }
 
-    private function newIngredient(string $name): Ingredient{
+    private function newIngredient(string $name, $users): Ingredient{
         return (new Ingredient())
             ->setName($name)
             ->setPrice(mt_rand(1, 200))
+            ->setUser($users[mt_rand(0, count($users)-1)])
             ;
     }
 
