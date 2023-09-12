@@ -20,7 +20,7 @@ class RecipeController extends AbstractController
     {
 //        $recipes = $recipeRepository->findBy(['isLocked' => false], ['name' => 'ASC']);
         $recipes = $paginator->paginate(
-            $recipeRepository->findBy(['isLocked' => false], ['name'=>'ASC']), /* query NOT result */
+            $recipeRepository->findBy(['user' => $this->getUser(),'isLocked' => false], ['name'=>'ASC']), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             10 /*limit per page*/
         );
@@ -40,7 +40,7 @@ class RecipeController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
             $recipe = $form->getData();
-
+            $recipe->setUser($this->getUser());
             $em->persist($recipe);
             $em->flush();
 

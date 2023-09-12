@@ -127,12 +127,9 @@ class AppFixtures extends Fixture
 
         // Recipes
         for($i=0; $i < 25; $i++){
-            $recipe = $this->newRecipe($this->recipeNames[$i], $ingredients);
+            $recipe = $this->newRecipe($this->recipeNames[$i], $ingredients, $users);
             $manager->persist($recipe);
         }
-
-
-
 
         $manager->flush();
     }
@@ -145,7 +142,7 @@ class AppFixtures extends Fixture
             ;
     }
 
-    private function newRecipe(string $name, array $ingredients): Recipe{
+    private function newRecipe(string $name, array $ingredients, $users): Recipe{
         $recipe =  (new Recipe())
             ->setName($name)
             ->setTime(mt_rand(0, 1) == 1 ? mt_rand(1, 1440) : null)
@@ -154,6 +151,7 @@ class AppFixtures extends Fixture
             ->setDescription($this->faker->text(300))
             ->setPrice(mt_rand(0, 1) == 1 ? mt_rand(1, 1000) : null)
             ->setIsFavorite(mt_rand(0, 1) == 1)
+            ->setUser($users[mt_rand(0, count($users)-1)])
             ;
         for($i = 0; $i < mt_rand(5, 15); $i++) {
             $recipe->addIngredient($ingredients[mt_rand(0, 49)]);
