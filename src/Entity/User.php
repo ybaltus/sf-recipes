@@ -22,7 +22,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank]
-    #[Assert\Range([
+    #[Assert\Length([
         'min' => 2,
         'max' => 50
     ])]
@@ -37,7 +37,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\Email()]
-    #[Assert\Range([
+    #[Assert\Length([
         'min' => 2,
         'max' => 180
     ])]
@@ -54,7 +54,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\NotBlank]
-    private ?string $password = null;
+    private ?string $password = 'password';
 
     #[ORM\Column]
     private \DateTimeImmutable $createdAt;
