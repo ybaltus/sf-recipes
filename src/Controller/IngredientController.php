@@ -8,9 +8,11 @@ use App\Repository\IngredientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class IngredientController extends AbstractController
 {
@@ -65,6 +67,7 @@ class IngredientController extends AbstractController
     }
 
     #[Route('/ingredient/edit/{id}', name: 'ingredient_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('user_edit', 'ingredient')]
     public function edit(Ingredient $ingredient, Request $request, EntityManagerInterface $em): Response{
         $form = $this->createForm(IngredientType::class, $ingredient);
 
@@ -90,6 +93,7 @@ class IngredientController extends AbstractController
     }
 
     #[Route('/ingredient/delete/{id}', name: 'ingredient_delete', methods: ['GET', 'POST'])]
+    #[IsGranted('user_edit', 'ingredient')]
     public function delete(Ingredient $ingredient, EntityManagerInterface $em): Response{
         $em->remove($ingredient);
         $em->flush();

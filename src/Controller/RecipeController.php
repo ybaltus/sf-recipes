@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/recipe')]
 class RecipeController extends AbstractController
@@ -58,6 +59,7 @@ class RecipeController extends AbstractController
     }
 
     #[Route('/edit/{id}', name: 'recipe_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('user_edit', 'ingredient')]
     public function edit(Request $request, EntityManagerInterface $em, Recipe $recipe): Response
     {
         $form = $this->createForm(RecipeType::class, $recipe);
@@ -79,6 +81,7 @@ class RecipeController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'recipe_delete', methods: ['GET', 'POST'])]
+    #[IsGranted('user_edit', 'ingredient')]
     public function delete(EntityManagerInterface $em, Recipe $recipe): Response
     {
         $em->remove($recipe);

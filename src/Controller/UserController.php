@@ -12,21 +12,23 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/user')]
 class UserController extends AbstractController
 {
     #[Route('/edit/{id}', name: 'user_edit')]
-    public function index(User $user, Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
+    #[IsGranted('current_user_view', 'user')]
+    public function edit(User $user, Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
     {
         // Verify the user is authenticated
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+//        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         // Verify the current user
-        $currentUser = $this->getUser();
-        if($currentUser !== $user){
-            return $this->redirectToRoute('security_login');
-        }
+//        $currentUser = $this->getUser();
+//        if($currentUser !== $user){
+//            return $this->redirectToRoute('security_login');
+//        }
 
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -54,6 +56,7 @@ class UserController extends AbstractController
         ]);
     }
     #[Route('/editPassword/{id}', name: 'user_edit_password', methods: ['GET', 'POST'])]
+    #[IsGranted('current_user_view', 'user')]
     public function editPassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em, User $user): Response{
         $form = $this->createForm(UserPasswordType::class);
         $form->handleRequest($request);

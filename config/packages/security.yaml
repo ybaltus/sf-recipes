@@ -37,8 +37,8 @@ security:
     access_control:
          - { path: ^/ingredient, roles: ROLE_USER }
          - { path: ^/recipe, roles: ROLE_USER }
+         - { path: ^/user, roles: ROLE_USER }
          - { path: ^/admin, roles: ROLE_ADMIN }
-         - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
     security:
