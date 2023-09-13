@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sf6 Recette {% endblock %}
+
+{% block body %}
+    <h1 class="text-secodnary">Recette {{ recipe.name }}</h1>
+    <a class="btn btn-secondary" title="Revenir vers la liste des recettes" href="{{ path('recipe_index') }}">Retour</a>
+
+    <div class="card border-info mt-3">
+        <div class="card-header">{{ recipe.name }}</div>
+        <div class="card-body">
+            <h4 class="card-title">Créée le {{ recipe.createdAt|date('d-m-Y') }}</h4>
+            <p class="card-text">Temps (en minute) : {{ recipe.time ? recipe.time : 'Non renseigné' }}</p>
+            <p class="card-text">{% if recipe.nbPeople %}Pour {{ recipe.nbPeople }} personnes{% else %}Non renseigné{% endif %}</p>
+            <p class="card-text">Difficulté : {{ recipe.difficulty ? : 'Non renseigné' }}</p>
+            <p class="card-text">Prix (en &euro;) : {{ recipe.price ?: 'Non renseigné' }}</p>
+            <p class="card-text">
+                Description : {{ recipe.description }}
+            </p>
+            <hr>
+            <div>
+                <h4>Liste des ingrédients</h4>
+                <ul class="list-group">
+                    {% for ingredient in recipe.ingredients %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ ingredient.name }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

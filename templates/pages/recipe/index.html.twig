@@ -28,6 +28,7 @@
                 <th scope="col">Prix / kg</th>
                 <th scope="col">Difficulté</th>
                 <th scope="col">Date de création</th>
+                <th scope="col">Public ? </th>
                 <th scope="col">Actions</th>
             </tr>
             </thead>
@@ -39,7 +40,9 @@
                     <td>{{ (recipe.price is null) ? '-' : recipe.price }}</td>
                     <td>{{ (recipe.difficulty is null) ? '-' : recipe.difficulty }} </td>
                     <td>{{ recipe.createdAt|date('d/m/Y') }}</td>
+                    <td>{{ recipe.isPublic ? 'Oui':'Non'}}</td>
                     <td>
+                        <a class="btn btn-info" title="Consulter la recette" href="{{ path('recipe_show', {'id': recipe.id}) }}">Consulter</a>
                         <a class="btn btn-secondary" title="Éditer une recette" href="{{ path('recipe_edit', {'id': recipe.id}) }}">Éditer</a>
                         <a class="btn btn-danger" title="Supprimer une recette" href="{{ path('recipe_delete', {'id': recipe.id}) }}">Supprimer</a>
                     </td>

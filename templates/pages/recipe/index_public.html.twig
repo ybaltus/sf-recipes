@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sf6 - Les recettes de la communauté{% endblock %}
+
+{% block body %}
+    <h1 class="text-secodnary mt-4">Les recettes de la communauté</h1>
+    {% if recipes.items is same as([]) %}
+        <h4>Il n'y a pas de recettes partagées par la communauté.</h4>
+    {% else %}
+    <div class="d-flex flex-wrap mt-4" >
+        {% for recipe in recipes %}
+        <div class="card border-primary mb-3 ms-1" style="max-width: 15rem;">
+            <div class="card-header">{{ recipe.name }}</div>
+            <div class="card-body">
+                <h4 class="card-title">Recette n° {{ recipe.id }}</h4>
+                <p class="card-title">Créée le {{ recipe.createdAt|date('d-m-Y') }}</p>
+                <p class="card-text">Difficulté : {{ recipe.difficulty ? : 'Non renseigné' }}</p>
+                <p class="card-text">Prix (en &euro;) : {{ recipe.price ?: 'Non renseigné' }}</p>
+                <p class="card-text">
+                    Description : {{ recipe.description|slice(0,50) ~'...' }}
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+        {# display navigation #}
+        <div class="navigation d-flex justify-content-center">
+            {{ knp_pagination_render(recipes) }}
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

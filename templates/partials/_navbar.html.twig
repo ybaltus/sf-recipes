@@ -11,6 +11,11 @@
                         <span class="visually-hidden">(current)</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('recipe_index_public') }}" title="Accueil">Recettes communautaires
+{#                        <span class="visually-hidden">(current)</span>#}
+                    </a>
+                </li>
                 {% if app.user %}
                 <li class="nav-item">
                     <a class="nav-link active" href="{{ path('ingredient_index') }}" title="Les ingrédients">Les ingrédients
