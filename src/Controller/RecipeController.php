@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Mark;
 use App\Entity\Recipe;
+use App\Form\MarkType;
 use App\Form\RecipeType;
+use App\Repository\MarkRepository;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -31,11 +34,36 @@ class RecipeController extends AbstractController
         ]);
     }
 
-    #[Route('/show/{id}', name: 'recipe_show', methods: ['GET'])]
+    #[Route('/show/{id}', name: 'recipe_show', methods: ['GET', 'POST'])]
     #[IsGranted('recipe_view', 'recipe')]
-    public function show(Recipe $recipe): Response{
+    public function show(Recipe $recipe, Request $request, EntityManagerInterface $em, MarkRepository $markRepository): Response{
+        $mark = new Mark();
+        $form = $this->createForm(MarkType::class, $mark);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $mark->setUser($this->getUser());
+            $mark->setRecipe($recipe);
+
+            $existingMark = $markRepository->findOneBy(['user' => $this->getUser(), 'recipe' =>$recipe]);
+            if(!$existingMark) {
+                $em->persist($mark);
+            }else {
+              $existingMark->setMark($form->getData()->getMark());
+            }
+
+            $em->flush();
+
+            $this->addFlash(
+                'success',
+                'Votre note à bien été enregistrée.'
+            );
+
+            return $this->redirectToRoute('recipe_show', ['id' => $recipe->getId()]);
+        }
+
         return $this->render('pages/recipe/show.html.twig',[
-            'recipe' => $recipe
+            'recipe' => $recipe,
+            'form' => $form->createView()
         ]);
     }
 

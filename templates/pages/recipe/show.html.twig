@@ -4,8 +4,15 @@
 
 {% block body %}
     <h1 class="text-secodnary">Recette {{ recipe.name }}</h1>
+    {% for label, messages in app.flashes(['success', 'warning']) %}
+        {% for message in messages %}
+            <div class="alert alert-dismissible alert-{{ label }}">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <p class="mb-0">{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endfor %}
     <a class="btn btn-secondary" title="Revenir vers la liste des recettes" href="{{ path('recipe_index') }}">Retour</a>
-
     <div class="card border-info mt-3">
         <div class="card-header">{{ recipe.name }}</div>
         <div class="card-body">
@@ -17,6 +24,7 @@
             <p class="card-text">
                 Description : {{ recipe.description }}
             </p>
+            <p>Notation: {% if recipe.average %}{{ recipe.average|number_format(2,'.', ',') }} / 5 {% else %} Aucune note{% endif %}</p>
             <hr>
             <div>
                 <h4>Liste des ingrédients</h4>
@@ -28,7 +36,11 @@
                     {% endfor %}
                 </ul>
             </div>
+            <div>
+                {{ form(form) }}
+            </div>
         </div>
+
     </div>
 
 {% endblock %}
