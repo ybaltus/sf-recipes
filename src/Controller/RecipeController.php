@@ -95,7 +95,7 @@ class RecipeController extends AbstractController
     }
 
     #[Route('/edit/{id}', name: 'recipe_edit', methods: ['GET', 'POST'])]
-    #[IsGranted('user_edit', 'ingredient')]
+    #[IsGranted('user_edit', 'recipe')]
     public function edit(Request $request, EntityManagerInterface $em, Recipe $recipe): Response
     {
         $form = $this->createForm(RecipeType::class, $recipe);
@@ -117,7 +117,7 @@ class RecipeController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'recipe_delete', methods: ['GET', 'POST'])]
-    #[IsGranted('user_edit', 'ingredient')]
+    #[IsGranted('user_edit', 'recipe')]
     public function delete(EntityManagerInterface $em, Recipe $recipe): Response
     {
         $em->remove($recipe);
