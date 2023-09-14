@@ -15,8 +15,12 @@
     <a class="btn btn-secondary" title="Revenir vers la liste des recettes" href="{{ path('recipe_index') }}">Retour</a>
     <div class="card border-info mt-3">
         <div class="card-header">{{ recipe.name }}</div>
+        <div>
+            <img style="max-width: 500px" src="{{ vich_uploader_asset(recipe, 'imageFile') }}" alt="{{ recipe.originalName }}">
+        </div>
         <div class="card-body">
             <h4 class="card-title">Créée le {{ recipe.createdAt|date('d-m-Y') }}</h4>
+
             <p class="card-text">Temps (en minute) : {{ recipe.time ? recipe.time : 'Non renseigné' }}</p>
             <p class="card-text">{% if recipe.nbPeople %}Pour {{ recipe.nbPeople }} personnes{% else %}Non renseigné{% endif %}</p>
             <p class="card-text">Difficulté : {{ recipe.difficulty ? : 'Non renseigné' }}</p>
