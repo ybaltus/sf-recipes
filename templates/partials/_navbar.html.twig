@@ -13,20 +13,20 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('recipe_index_public') }}" title="Accueil">Recettes communautaires
-{#                        <span class="visually-hidden">(current)</span>#}
+                        {#                        <span class="visually-hidden">(current)</span>#}
                     </a>
                 </li>
                 {% if app.user %}
-                <li class="nav-item">
-                    <a class="nav-link active" href="{{ path('ingredient_index') }}" title="Les ingrédients">Les ingrédients
-                        <span class="visually-hidden">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="{{ path('recipe_index') }}" title="Les recettes">Les recettes
-                        <span class="visually-hidden">(current)</span>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ path('ingredient_index') }}" title="Les ingrédients">Les ingrédients
+                            <span class="visually-hidden">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ path('recipe_index') }}" title="Les recettes">Les recettes
+                            <span class="visually-hidden">(current)</span>
+                        </a>
+                    </li>
                 {% endif %}
                 <li class="nav-item">
                     <a class="nav-link active" href="{{ path('contact_index') }}" title="Formulaire de contact">Contact
@@ -36,8 +36,14 @@
             </ul>
             <div class="d-flex">
                 {% if app.user %}
-{#                    <a class="btn btn-primary" href="{{ path('user_edit', {'id': app.user.id}) }}" title="Mon profil">Mon profil</a>#}
-                <span class="dropdown">
+                    {#                    <a class="btn btn-primary" href="{{ path('user_edit', {'id': app.user.id}) }}" title="Mon profil">Mon profil</a>#}
+                    {% if is_granted('ROLE_ADMIN') %}
+                            <a class="btn btn-primary" href="{{ path('admin_index') }}" title="Espace admin">Administraion
+                                <span class="visually-hidden">(current)</span>
+                            </a>
+
+                    {% endif %}
+                    <span class="dropdown">
                         <a class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Mon profil</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="{{ path('user_edit', {'id': app.user.id}) }}" title="Éditer mon profil">Éditer mon profil</a>

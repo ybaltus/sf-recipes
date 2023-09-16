@@ -112,12 +112,21 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         // Users
-        $users = [];
+        $admin = (new User())
+            ->setFullName('Admin SF recipe')
+            ->setEmail('admin@sf6recipe.com')
+            ->setPlainPassword('password')
+            ->setRoles(['ROLE_USER','ROLE_ADMIN'])
+        ;
+        $manager->persist($admin);
+        $users[]= $admin;
         for($i=0; $i < 10; $i++){
             $user = $this->newUser();
             $users[] = $user;
             $manager->persist($user);
         }
+
+
 
         // Ingredients
         $ingredients = [];
@@ -171,7 +180,7 @@ class AppFixtures extends Fixture
             ->setIsFavorite(mt_rand(0, 1) == 1)
             ->setUser($users[mt_rand(0, count($users)-1)])
             ->setIsPublic(mt_rand(0,1) == 1)
-            ;
+        ;
         for($i = 0; $i < mt_rand(5, 15); $i++) {
             $recipe->addIngredient($ingredients[mt_rand(0, 49)]);
         }
