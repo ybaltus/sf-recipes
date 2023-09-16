@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Contact;
 use App\Entity\Ingredient;
 use App\Entity\Mark;
 use App\Entity\Recipe;
@@ -142,6 +143,12 @@ class AppFixtures extends Fixture
             }
         }
 
+        // Contacts
+        for ($i=0; $i <5; $i++){
+            $contact = $this->newContact($i);
+            $manager->persist($contact);
+        }
+
         $manager->flush();
     }
 
@@ -186,6 +193,15 @@ class AppFixtures extends Fixture
             ->setMark(mt_rand(1, 5))
             ->setRecipe($recipe)
             ->setUser($users[mt_rand(0, count($users)-1)])
+            ;
+    }
+
+    private function newContact(int $indice): Contact{
+        return  (new Contact())
+            ->setFullName($this->faker->name())
+            ->setEmail($this->faker->email())
+            ->setSubject('Demande n°'.$indice)
+            ->setMessage($this->faker->text(300))
             ;
     }
 }
