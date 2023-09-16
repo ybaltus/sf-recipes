@@ -4,20 +4,18 @@ namespace App\Controller;
 
 use App\Entity\Contact;
 use App\Form\ContactType;
+use App\Services\MailService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/contact')]
 class ContactController extends AbstractController
 {
     #[Route('', name: 'contact_index')]
-    public function index(Request $request, EntityManagerInterface $em, MailerInterface $mailer): Response
+    public function index(Request $request, EntityManagerInterface $em, MailService $mailService): Response
     {
         $contact = new Contact();
         $currentUser = $this->getUser();
@@ -35,7 +33,13 @@ class ContactController extends AbstractController
             $em->persist($contact);
             $em->flush();
 
-            $this->sendEmail($mailer, $contact);
+            $mailService->sendEmail(
+                $contact->getEmail(),
+                'admin@sf6recipe.fr',
+                $contact->getSubject() ?: 'Message sans sujet',
+                'emails/contact.html.twig',
+                ['contact' => $contact]
+            );
 
             $this->addFlash(
                 'success',
@@ -47,27 +51,5 @@ class ContactController extends AbstractController
         return $this->render('pages/contact/index.html.twig', [
             'form' => $form->createView()
         ]);
-    }
-
-    private function sendEmail(MailerInterface $mailer, Contact $contact): void
-    {
-        $email = (new TemplatedEmail())
-            ->from($contact->getEmail())
-            ->to('admin@sf6recipe.fr')
-            ->subject($contact->getSubject() ?: 'Message sans sujet')
-            // path of the Twig template to render
-            ->htmlTemplate('emails/contact.html.twig')
-            // pass variables (name => value) to the template
-            ->context([
-                'contact' => $contact
-            ]);
-
-        try {
-            $mailer->send($email);
-        } catch (TransportExceptionInterface $e) {
-            // some error prevented the email sending; display an
-            // error message or try to resend the message
-            var_dump($e->getMessage());
-        }
     }
 }
