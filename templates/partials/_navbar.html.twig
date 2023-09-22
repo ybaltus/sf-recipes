@@ -54,7 +54,7 @@
                     <a class="btn btn-primary" href="{{ path('security_logout') }}" title="Se déconnecter">Déconnexion</a>
                 {% else %}
                     <a class="btn btn-primary" href="{{ path('security_login') }}" title="Se connecter">Connexion</a>
-                    <a class="btn btn-primary" href="{{ path('security_signup') }}" title="S'inscrire">Inscription</a>
+                    <a class="btn btn-primary" id="btn_signin" href="{{ path('security_signup') }}" title="S'inscrire">Inscription</a>
                 {% endif %}
             </div>
         </div>
