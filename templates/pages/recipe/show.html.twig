@@ -21,7 +21,7 @@
         <div class="card-body">
             <h4 class="card-title">Créée le {{ recipe.createdAt|date('d-m-Y') }}</h4>
 
-            <p class="card-text">Temps (en minute) : {{ recipe.time ? recipe.time : 'Non renseigné' }}</p>
+            <p class="card-text">Temps (en minute) : {{ recipe.time ? recipe.time|min_to_hour : 'Non renseigné' }}</p>
             <p class="card-text">{% if recipe.nbPeople %}Pour {{ recipe.nbPeople }} personnes{% else %}Non renseigné{% endif %}</p>
             <p class="card-text">Difficulté : {{ recipe.difficulty ? : 'Non renseigné' }}</p>
             <p class="card-text">Prix (en &euro;) : {{ recipe.price ?: 'Non renseigné' }}</p>
