@@ -19,11 +19,12 @@ Création d'une application pour gérer des recettes avec Symfony 6.
 
 ```
 1. composer install
-2. symfony console doctrine:migrations:migrate
-3. symfony console doctrine:fixture:load
-4. npm install / yarn install
-5. npm run dev / yarn dev
-6. symfony server:start
+2. symfony console doctrine:database:create
+3. symfony console doctrine:migrations:migrate
+4. symfony console doctrine:fixture:load
+5. npm install / yarn install
+6. npm run dev / yarn dev
+7. symfony server:start
 ```
 
 ## Pour lancer le projet avec docker
