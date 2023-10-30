@@ -1,0 +1,13 @@
+### Global
+.git*
+.idea*
+
+### Symfony
+.env.local
+/public/bundles/
+/public/build/
+/var/
+/vendor/
+
+### Node modules
+/node_modules/

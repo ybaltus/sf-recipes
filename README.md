@@ -15,7 +15,7 @@ Création d'une application pour gérer des recettes avec Symfony 6.
 * vich/uploader-bundle
 * fakerphp/faker
 
-## Pour lancer le projet
+## Pour lancer le projet avec Symfony CLI
 
 ```
 1. composer install
@@ -30,5 +30,6 @@ Création d'une application pour gérer des recettes avec Symfony 6.
 ## Pour lancer le projet avec docker
 
 ```
-1. soon
+1. docker-compose up -d
+2. Go to localhost:8000
 ```

@@ -1,21 +1,55 @@
 version: '3'
 
 services:
-###> doctrine/doctrine-bundle ###
+
   database:
-    image: postgres:${POSTGRES_VERSION:-15}-alpine
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
+    image: mariadb:${MARIADB_VERSION}
+    container_name: db_sf_recipes
+    restart: on-failure
     volumes:
-      - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+      - db-data:/var/lib/mysql
+    environment:
+      MARIADB_ROOT_PASSWORD: root1234
+      MYSQL_DATABASE: ${DB_NAME:-sf_recipes}
+      MYSQL_USER: ${DB_USER:-sfuser}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-sfuser1234}
+    networks:
+      - sf_recipe_network
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin_sf_recipes
+    restart: always
+    depends_on:
+      - database
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: database
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    networks:
+      - sf_recipe_network
+
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    container_name: app_sf_recipes
+    restart: always
+    ports:
+      - "8000:80"
+    depends_on:
+      - database
+    networks:
+      - sf_recipe_network
+    environment:
+      DB_HOST: database
+    volumes:
+      - ./:/var/www
+
+networks:
+  sf_recipe_network:
 
 volumes:
-###> doctrine/doctrine-bundle ###
-  database_data:
-###< doctrine/doctrine-bundle ###
+  db-data:
